@@ -168,7 +168,7 @@ export default {
   background: rgb(216, 216, 216);
 }
 .spymaster-black {
-  background: rgba(39, 39, 39, 0.795);
+  background: rgba(41, 41, 41, 0.671);
 }
 .wrapper {
   justify-content: center;

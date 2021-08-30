@@ -1,7 +1,6 @@
 import firebase from 'firebase'
 import 'firebase/firestore'
 import 'random-words'
-import { ref, onUnmounted } from 'vue';
 var randomWords = require('random-words');
 const short = require("short-uuid")
 
@@ -55,40 +54,3 @@ export const createTile = (gameId, colour) => {
   var tile = {game_id: gameId, 'word': randomWords(), 'clicked': false, 'colour': colour}; 
   return tilesCollection.add(tile);
 }
-
-export const getGame = async id => {
-  const game = await gamesCollection.doc(id).get();
-  return game.exists ? game.data() : null
-}
-
-export const getTiles = async () => {
-  const tiles = ref([])
-  const close = tilesCollection.onSnapshot(snapshot => {
-    tiles.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-  })
-  onUnmounted(close)
-  return tiles
-}
-
-export const getTilesOnce = () => {
-  let tiles = [];
-  const ref = db.collection('tiles')
-  
-  ref.where("game_id", "==", "gpfoE3QFTLv5uTL9xm65z1")
-    .limit(25)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        tiles.push({
-          id: doc.id, 
-          word: doc.data().word,
-          colour: doc.data().colour,
-          clicked: doc.data().clicked,
-          game_id: doc.data().game_id
-        });
-      })
-    })
-  return tiles;
-}
-//  how to create dedicated dyno
-// what usually holds up the queues
