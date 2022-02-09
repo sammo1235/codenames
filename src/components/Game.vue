@@ -1,13 +1,14 @@
 <template>
-  <div class="flex">
-    <span style="color: blue">{{ colourCount('blue')}}</span> - <span style="color: red">{{ colourCount('red')}}</span>
-    <p v-if="!winner" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn }}'s turn</p>
-    <p v-if="winner" :style="[winner === 'blue' ? 'color: blue' : 'color: red']">{{ winner }} wins!</p>
-    <button v-if="!winner" v-on:click="takeTurn()">End Turn</button>
+  <div class="flex top-box">
+    <h1>C O D E N A M E D</h1>
+    <span style="color: blue; font-size: 18px; font-weight: bold;">{{ colourCount('blue')}}</span> - <span style="color: red; font-size: 18px; font-weight: bold;">{{ colourCount('red')}}</span>
+    <p v-if="!winner" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
+    <p v-if="winner" :style="[winner === 'blue' ? 'color: blue' : 'color: red']">{{ winner[0].toUpperCase() + winner.substring(1) }} wins!</p>
+    <button class="button" v-if="!winner" v-on:click="takeTurn()">End Turn</button>
   </div>
   <div class="flex wrapper">
-    <div @dblclick="clickTile(tile.id, tile.clicked, tile.colour)" v-for="tile in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour}` : spymaster ? `spymaster-${tile.colour}` : '', 'box box1']">
-      <p style="font-size: 15px; margin: auto; padding: 35px 0; font-weight: bold;">{{ tile.word }}</p>
+    <div @click="clickTile(tile.id, tile.clicked, tile.colour)" v-for="tile in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour}` : spymaster ? `spymaster-${tile.colour}` : '', 'box']">
+      <p class="word" style="font-size: 15px; margin: auto; padding:40px 0; font-weight: bold;">{{ tile.word.toUpperCase() }}</p>
     </div>
   </div>
   <button><router-link to='/'>Home</router-link></button>
@@ -25,7 +26,7 @@ export default {
       spymaster: false,
       winner: '',
       gameId: this.$route.params.id,
-      turn: '',
+      turn: 'blue',
       gameEnded: false
     }
   },
@@ -35,7 +36,7 @@ export default {
 
     gameRef.where(firebase.firestore.FieldPath.documentId(), '==', this.gameId)
       .onSnapshot((querySnapshot) => {
-        var turn = '';
+        var turn = 'blue';
         var gameEnded = '';
         var winner = '';
         querySnapshot.forEach((doc) => {
@@ -133,18 +134,21 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 .box {
-  background-color: rgb(216, 216, 216);
-  color: white;
+  background-color: white;
+  color: black;
+  border-style: solid;
   border-radius: 5px;
-  padding: 5px;
+  padding: 7px;
   font-size: 150%;
   border-width: 2px;
   border-color: black;
   text-align: center;
   /* width: 200px; */
+}
+.top-box {
+  margin-top: 60px;
 }
 .clicked-blue {
   background: rgba(39, 39, 212, 0.842);
@@ -157,6 +161,7 @@ export default {
 }
 .clicked-black {
   background: black;
+  color: white;
 }
 .spymaster-blue {
   background: lightblue;
@@ -171,16 +176,30 @@ export default {
   background: rgba(41, 41, 41, 0.671);
 }
 .wrapper {
+  margin-top: 30px;
   justify-content: center;
-  margin: inherit;
   display: grid;
   grid-gap: 10px;
-  grid-template-columns: repeat(5, 100px);
-  grid-template-rows: repeat(5, 100px);
+  grid-template-columns: repeat(5, 110px);
+  grid-template-rows: repeat(5, 110px);
   grid-auto-flow: column;
+}
+.word {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
 }
 a {
   text-decoration: none;
+  color: black;
+}
+button {
+  background: white;
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+  border-radius: 5px;
+  padding: 8px;
   color: black;
 }
 </style>

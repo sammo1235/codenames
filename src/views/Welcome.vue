@@ -1,10 +1,10 @@
 <template>
   <div class="hello">
-    <h1>C O D E N A M E S</h1>
-    <button v-on:click="createGame()">New Game</button>
+    <h1>C O D E N A M E D</h1>
+    <button v-on:click="createGame()" style="margin-top: 30px;">New Game</button>
   </div>
-  <form id="join-game" style="margin-top: 15px">
-    <input type="text" name="gameId" placeholder="Enter Game id">
+  <form id="join-game" style="margin-top: 25px">
+    <input style="padding: 10px; border-radius: 7px;" type="text" name="gameId" placeholder="Enter Game ID">
     <button style="margin-left: 10px;" v-on:click="joinGame()">Join Game</button>
   </form>
 </template>
@@ -31,6 +31,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.hello {
+  margin-top: 60px;
+}
 h3 {
   margin: 40px 0 0;
 }

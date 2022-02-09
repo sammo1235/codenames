@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "firebase": "^8.10.1",
     "random-words": "^1.1.1",
     "short-uuid": "^4.2.0",
     "vue": "^3.0.0",

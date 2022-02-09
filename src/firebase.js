@@ -51,6 +51,11 @@ export const createGame = () => {
 }
 
 export const createTile = (gameId, colour) => {
-  var tile = {game_id: gameId, 'word': randomWords(), 'clicked': false, 'colour': colour}; 
+  let word = randomWords();
+  while (word.length > 8) {
+    word = randomWords()
+  }
+
+  var tile = {game_id: gameId, 'word': word, 'clicked': false, 'colour': colour}; 
   return tilesCollection.add(tile);
 }
