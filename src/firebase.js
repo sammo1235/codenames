@@ -50,12 +50,34 @@ export const createGame = () => {
   return gameId;
 }
 
+export const createCodeSweepersGame = () => {
+  let gameId = short.generate();
+
+  let game = {turn: 'blue', game_ended: false, winner: ''};
+  gamesCollection.doc(gameId).set(game);
+
+  let tiles = [];
+  for (let i = 0; i < 9; i++) {
+    tiles.push(createTile(gameId, 'blue'))
+  }
+  for (var k=0; k<8; k++) {
+    tiles.push(createTile(gameId, 'red'))
+  }
+  for (var j=0; j<12; j++) {
+    tiles.push(createTile(gameId, 'black'))
+  }
+  for (var m=0; m<20; m++) {
+    tiles.push(createTile(gameId, 'gray'))
+  }
+  return gameId;
+}
+
 export const createTile = (gameId, colour) => {
   let word = randomWords();
   while (word.length > 8) {
     word = randomWords()
   }
 
-  var tile = {game_id: gameId, 'word': word, 'clicked': false, 'colour': colour}; 
+  var tile = {game_id: gameId, 'word': word, 'clicked': false, 'colour': colour, showBombCount: false, bombCount: 0, showBombsInArea: false}; 
   return tilesCollection.add(tile);
 }
