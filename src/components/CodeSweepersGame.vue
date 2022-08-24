@@ -10,8 +10,21 @@
   </div>
   <div class="flex wrapper">
     <div @click="clickTile(tile.id, tile.clicked, tile.colour, index)" v-for="(tile, index) in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour}` : spymaster ? `spymaster-${tile.colour}` : '', 'box']">
-      <p class="word" style="font-size: 12px; margin: auto; font-weight: normal;">{{ tile.word.toUpperCase() }}</p>
-      <p class="word" style="font-size: 12px; margin: auto; font-weight: normal;" v-if="tile.showBombCount"><img style="height: 25px; margin-top: 0px" src="https://www.freeiconspng.com/uploads/black-bomb-png-image-0.png" />{{ tile.bombCount }}</p>
+        <p class="word" style="font-size: 12px; margin: 5px 10px; 5px 10px; font-weight: normal;">{{ tile.word.toUpperCase() }}</p>
+      <div style="display: flex; height: 25px; justify-content: center;">
+        <div v-if="tile.showBombCount" style="display: flex; flex-direction: column;">
+          <p class="word" style="font-size: 12px; margin: auto; font-weight: normal;" v-if="tile.showBombCount">{{ tile.bombCount }}</p>
+          <img style="height: 25px; margin-top: -3px" src="https://www.freeiconspng.com/uploads/black-bomb-png-image-0.png" />
+        </div>
+        <div v-if="tile.showColourCount" style="display: flex; flex-direction: column;">
+          <p style="margin: 0 0; font-size: 12px;">{{ tile.blueColourCount }}</p>
+          <p style="margin: 0 0; border: 1px solid black; background-color: blue; height: 5px; width: 15px;">&nbsp;&nbsp;</p>
+        </div>
+        <div v-if="tile.showColourCount" style="display: flex; flex-direction: column;">
+          <p style="margin: 0 0; font-size: 12px;">{{ tile.redColourCount }}</p>
+          <p style="margin: 0 0; border: 1px solid black; background-color: red; height: 5px; width: 15px;">&nbsp;&nbsp;</p>
+        </div>
+      </div>
     </div>
   </div>
   <button><router-link to='/'>Home</router-link></button>
@@ -68,7 +81,10 @@ export default {
             clicked: doc.data().clicked,
             showBombCount: doc.data().showBombCount,
             showBombsInArea: doc.data().showBombsInArea,
-            bombCount: doc.data().bombCount
+            bombCount: doc.data().bombCount,
+            showColourCount: doc.data().showColourCount,
+            redColourCount: doc.data().redColourCount,
+            blueColourCount: doc.data().blueColourCount,
           });
         })
         this.tiles = tileData;
@@ -130,12 +146,16 @@ export default {
       });
       console.log(areaIds)
       let bombCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "black").length
+      let redCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "red").length
+      let blueCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "blue").length
       console.log(bombCount)
-      this.tiles = this.tiles.map((tile, index) => index === clicked_tile_index ? {...tile, showBombsInArea: correctAnswer, showBombCount: true, bombCount: bombCount} : tile)
-      tileRef.update({showBombCount: true, bombCount: bombCount})
-      // this.tiles.forEach((tile, index) => {
-      //   console.log(index, tile.word)
-      // })
+      if (correctAnswer) {
+        this.tiles = this.tiles.map((tile, index) => index === clicked_tile_index ? {...tile, showBombCount: true, bombCount: bombCount, showColourCount: true, redColourCount: redCount, blueColourCount: blueCount} : tile)
+        tileRef.update({showBombCount: true, bombCount: bombCount, showColourCount: true, redColourCount: redCount, blueColourCount: blueCount})
+      } else {
+        this.tiles = this.tiles.map((tile, index) => index === clicked_tile_index ? {...tile, showBombCount: true, bombCount: bombCount} : tile)
+        tileRef.update({showBombCount: true, bombCount: bombCount})
+      }
     },
     colourCount(colour) {
       var filtered = this.tiles.filter(function (el) {

@@ -78,6 +78,6 @@ export const createTile = (gameId, colour) => {
     word = randomWords()
   }
 
-  var tile = {game_id: gameId, 'word': word, 'clicked': false, 'colour': colour, showBombCount: false, bombCount: 0, showBombsInArea: false}; 
+  var tile = {game_id: gameId, 'word': word, 'clicked': false, 'colour': colour, showBombCount: false, bombCount: 0, showBombsInArea: false, redColourCount: 0, blueColourCount: 0, showColourCount: false}; 
   return tilesCollection.add(tile);
 }
