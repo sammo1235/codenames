@@ -169,6 +169,8 @@ export default {
         areaIds.push(this.tileMap[coord[0]][coord[1]])
       });
       console.log(areaIds)
+      let currentTile = areaIds.indexOf(clicked_tile_index)
+      areaIds.splice(currentTile, 1)
       let bombCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "black").length
       let redCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "red").length
       let blueCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "blue").length
