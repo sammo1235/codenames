@@ -1,7 +1,7 @@
 <template>
   <div class="flex top-box">
     <h1>C O D E S W E E P E R S</h1>
-    <div style="display: flex; flex-direction: row; justify-content: center; text-align: center;">
+    <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; margin-bottom: 0px;">
       <p><span style="color: blue;">{{ colourCount('blue')}}</span> - <span style="color: red;">{{ colourCount('red')}}</span></p>
       <p v-if="!winner" style="margin-left: 40px;" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
       <p v-if="winner" style="margin-left: 40px;" :style="[winner === 'blue' ? 'color: blue' : 'color: red']">{{ winner[0].toUpperCase() + winner.substring(1) }} wins!</p>
@@ -10,19 +10,19 @@
   </div>
   <div class="flex wrapper">
     <div @click="clickTile(tile.id, tile.clicked, tile.colour, index)" v-for="(tile, index) in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour}` : spymaster ? `spymaster-${tile.colour}` : '', 'box']">
-        <p class="word" style="font-size: 12px; margin: 5px 10px; 5px 10px; font-weight: normal;">{{ tile.word.toUpperCase() }}</p>
+      <p class="word" style="font-size: 12px; margin: 5px 0px; 5px 0px; margin-left: auto; margin-right: auto; font-weight: normal;">{{ tile.word.toUpperCase() }}</p>
       <div style="display: flex; height: 25px; justify-content: center;">
         <div v-if="tile.showBombCount" style="display: flex; flex-direction: column;">
           <p class="word" style="font-size: 12px; margin: auto; font-weight: normal;" v-if="tile.showBombCount">{{ tile.bombCount }}</p>
-          <img style="height: 25px; margin-top: -3px" src="https://www.freeiconspng.com/uploads/black-bomb-png-image-0.png" />
+          <img style="height: 20px; margin-top: -3px" src="https://www.freeiconspng.com/uploads/black-bomb-png-image-0.png" />
         </div>
         <div v-if="tile.showColourCount" style="display: flex; flex-direction: column;">
           <p style="margin: 0 0; font-size: 12px;">{{ tile.blueColourCount }}</p>
-          <p style="margin: 0 0; border: 1px solid black; background-color: blue; height: 5px; width: 15px;">&nbsp;&nbsp;</p>
+          <p style="margin: 0 0; border: 1px solid black; background-color: blue; height: 15px; width: 15px;">&nbsp;&nbsp;</p>
         </div>
         <div v-if="tile.showColourCount" style="display: flex; flex-direction: column;">
           <p style="margin: 0 0; font-size: 12px;">{{ tile.redColourCount }}</p>
-          <p style="margin: 0 0; border: 1px solid black; background-color: red; height: 5px; width: 15px;">&nbsp;&nbsp;</p>
+          <p style="margin: 0 0; border: 1px solid black; background-color: red; height: 15px; width: 15px;">&nbsp;&nbsp;</p>
         </div>
       </div>
     </div>
@@ -251,7 +251,7 @@ export default {
   background: rgba(41, 41, 41, 0.671);
 }
 .wrapper {
-  margin-top: 30px;
+  margin-top: 15px;
   justify-content: center;
   display: grid;
   grid-gap: 10px;
