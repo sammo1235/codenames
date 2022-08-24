@@ -4,6 +4,8 @@
     <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; margin-bottom: 0px;">
       <p><span style="color: blue;">{{ colourCount('blue')}}</span> - <span style="color: red;">{{ colourCount('red')}}</span></p>
       <p v-if="!winner" style="margin-left: 40px;" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
+      <p style="margin-left: 40px;">Lives: <span style="color: blue;">{{ blueLives }}</span> - <span style="color: red;">{{ redLives }}</span></p>
+
       <p v-if="winner" style="margin-left: 40px;" :style="[winner === 'blue' ? 'color: blue' : 'color: red']">{{ winner[0].toUpperCase() + winner.substring(1) }} wins!</p>
       <button class="button" style="margin-left: 40px;" v-if="!winner" v-on:click="takeTurn()">End Turn</button>
     </div>
@@ -44,7 +46,9 @@ export default {
       winner: '',
       gameId: this.$route.params.id,
       turn: 'blue',
-      gameEnded: false
+      gameEnded: false,
+      blueLives: 2,
+      redLives: 2
     }
   },
   created() {
@@ -56,13 +60,20 @@ export default {
         var turn = 'blue';
         var gameEnded = '';
         var winner = '';
+        let blueLives = 2;
+        let redLives = 2;
         querySnapshot.forEach((doc) => {
           turn = doc.data().turn,
           gameEnded = doc.data().game_ended,
-          winner = doc.data().winner
+          winner = doc.data().winner,
+          blueLives = doc.data().blueLives,
+          redLives = doc.data().redLives
         })
         this.turn = turn;
         this.gameEnded = gameEnded;
+        this.blueLives = blueLives;
+        this.redLives = redLives;
+
         if(gameEnded) {
           this.spymaster = true;
           this.winner = winner;
@@ -113,13 +124,26 @@ export default {
         tileRef.update({clicked: true});
         this.showBombsInArea(index, tileRef, tileColour == this.turn)
         if (tileColour === "black") {
-            this.endGame()
-          }
+            this.takeLife()
+        }
+        if (this.blueLives == 0 || this.redLives == 0) {
+          this.endGame()
+        }
         if(tileColour != this.turn) {
           this.takeTurn()
         }
         this.checkWinner()
       } 
+    },
+    takeLife() {
+      const gameRef = db.collection('games').doc(this.gameId)
+      if (this.turn == "red") {
+        this.redLives = this.redLives - 1
+        gameRef.update({redLives: this.redLives})
+      } else {
+        this.blueLives = this.blueLives - 1
+        gameRef.update({blueLives: this.blueLives})
+      }
     },
     showBombsInArea(clicked_tile_index, tileRef, correctAnswer) {
       let cti = clicked_tile_index

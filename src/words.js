@@ -1,4 +1,4 @@
-[ "people",
+export const words = [ "people",
 "history",
 "way",
 "art",
