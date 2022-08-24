@@ -1,7 +1,7 @@
 #!/bin/bash
 
 chr="\""
-file="words.txt"
+file="new_words.txt"
 cp $file $file."_backup"
 while read -r line
 do

@@ -1,6 +1,6 @@
 import firebase from 'firebase'
 import 'firebase/firestore'
-import { words } from './words';
+import { words } from './new_words';
 
 const short = require("short-uuid")
 
