@@ -53,30 +53,42 @@ export const createGame = () => {
 export const createCodeSweepersGame = () => {
   let gameId = short.generate();
 
-  let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 2, redLives: 2};
+  let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 4, redLives: 4};
   gamesCollection.doc(gameId).set(game);
 
+  let gameWords = getWords(49)
   let tiles = [];
   for (let i = 0; i < 9; i++) {
-    tiles.push(createTile(gameId, 'blue'))
+    let word = gameWords[i]
+    tiles.push(createTile(gameId, word, 'blue'))
   }
-  for (var k=0; k<8; k++) {
-    tiles.push(createTile(gameId, 'red'))
+  for (var k=9; k<17; k++) {
+    let word = gameWords[k]
+    tiles.push(createTile(gameId, word, 'red'))
   }
-  for (var j=0; j<12; j++) {
-    tiles.push(createTile(gameId, 'black'))
+  for (var j=17; j<29; j++) {
+    let word = gameWords[j]
+    tiles.push(createTile(gameId, word, 'black'))
   }
-  for (var m=0; m<20; m++) {
-    tiles.push(createTile(gameId, 'gray'))
+  for (var m=29; m<49; m++) {
+    let word = gameWords[m]
+    tiles.push(createTile(gameId, word, 'gray'))
   }
+
+  // uniq checker
+  // Array.from(new Set(this.tiles.map(tile => tile.word))) 
   return gameId;
 }
 
-export const createTile = (gameId, colour) => {
-  let word = words[Math.floor(Math.random()*words.length)];
-  while (word.length > 8 || word.length < 4) {
-    word = words[Math.floor(Math.random()*words.length)];
-  }
+const getWords = (amount) => {
+  let start = Math.floor(Math.random()*words.length)
+  return words.slice(start, start + amount + 1);
+}
+
+export const createTile = (gameId, word, colour) => {
+  // while (word.length > 8 || word.length < 4) {
+  //   word = words[Math.floor(Math.random()*words.length)];
+  // }
 
   var tile = {game_id: gameId, 'word': word, 'clicked': false, 'colour': colour, showBombCount: false, bombCount: 0, showBombsInArea: false, redColourCount: 0, blueColourCount: 0, showColourCount: false}; 
   return tilesCollection.add(tile);

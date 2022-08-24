@@ -47,8 +47,8 @@ export default {
       gameId: this.$route.params.id,
       turn: 'blue',
       gameEnded: false,
-      blueLives: 2,
-      redLives: 2
+      blueLives: 4,
+      redLives: 4
     }
   },
   created() {
@@ -60,8 +60,8 @@ export default {
         var turn = 'blue';
         var gameEnded = '';
         var winner = '';
-        let blueLives = 2;
-        let redLives = 2;
+        let blueLives = 4;
+        let redLives = 4;
         querySnapshot.forEach((doc) => {
           turn = doc.data().turn,
           gameEnded = doc.data().game_ended,
