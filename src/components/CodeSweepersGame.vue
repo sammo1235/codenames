@@ -11,8 +11,8 @@
     </div>
   </div>
   <div class="flex wrapper">
-    <div @click="clickTile(tile.id, tile.clicked, tile.colour, index)" v-for="(tile, index) in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour}` : spymaster ? `spymaster-${tile.colour}` : '', 'box']">
-      <p class="word" style="font-size: 12px; margin: 5px 0px; 5px 0px; margin-left: auto; margin-right: auto; font-weight: normal;">{{ tile.word.toUpperCase() }}</p>
+    <div @click="playSound(tile.colour), clickTile(tile.id, tile.clicked, tile.colour, index)" v-for="(tile, index) in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour} box-flip` : spymaster ? `spymaster-${tile.colour}` : '', 'box']">
+      <p class="word" style="font-size: 12px; margin: 5px 0px; 5px 0px; margin-left: auto; margin-right: auto; font-weight: normal; width: 100%;">{{ tile.word.toUpperCase() }}</p>
       <div style="display: flex; height: 25px; justify-content: center;">
         <div v-if="tile.showBombCount" style="display: flex; flex-direction: column;">
           <p class="word" style="font-size: 12px; margin: auto; font-weight: normal;" v-if="tile.showBombCount">{{ tile.bombCount }}</p>
@@ -31,11 +31,19 @@
   </div>
   <button><router-link to='/'>Home</router-link></button>
   <button v-on:click="spymasterSwitch()" style="margin-left: 10px; margin-top: 30px">Spymaster</button>
+  <audio id="audio" src="../assets/click.wav"></audio>
 </template>
 
 <script>
 import { db } from '@/firebase'
 import firebase from 'firebase'
+import click from '../assets/click.wav'
+import explosion from '../assets/explosion.wav'
+
+var time = Math.random() * (2 - 0) + 0;
+var box = document.querySelector('.box');
+box.style.setProperty('--delay-time', time +'s');
+
 export default {
   name: 'App',
   data() {
@@ -48,7 +56,7 @@ export default {
       turn: 'blue',
       gameEnded: false,
       blueLives: 4,
-      redLives: 4
+      boxLives: 4
     }
   },
   created() {
@@ -135,6 +143,14 @@ export default {
         this.checkWinner()
       } 
     },
+    playSound(colour) {
+      let audio = new Audio(click)
+      if (colour == "black") {
+        audio = new Audio(explosion)
+      }
+      
+      audio.play()
+      },
     takeLife() {
       const gameRef = db.collection('games').doc(this.gameId)
       if (this.turn == "red") {
@@ -233,26 +249,40 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
+:root {
+  --delay-time: 1s; 
+}
+
 .box {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: white;
+  animation: fadeIn var(--delay-time) cubic-bezier(.36,.07,.19,.97) both;
+  background-color: rgb(237, 237, 237);
   color: black;
-  border-style: solid;
   border-radius: 5px;
   padding: 7px;
   font-size: 150%;
-  border-width: 2px;
-  border-color: black;
   text-align: center;
+  justify-content: center;
+  transition: 0.8s;
+  box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  transform-style: preserve-3d;
   /* width: 200px; */
 }
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+/* .box-flip{
+  transform: rotateX(180deg);
+  transition: 0.8s;
+} */
+
 .top-box {
-  margin-top: 60px;
+  margin-top: 40px;
 }
 .clicked-blue {
-  background: rgba(39, 39, 212, 0.842);
+  background: rgba(82, 148, 248, 0.842);
 }
 .clicked-red {
   background: rgba(221, 60, 60, 0.945);
@@ -261,6 +291,7 @@ export default {
   background: rgba(241, 203, 144, 0.555);
 }
 .clicked-black {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
   background: black;
   color: white;
 }
@@ -280,9 +311,9 @@ export default {
   margin-top: 15px;
   justify-content: center;
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(7, 90px);
-  grid-template-rows: repeat(7, 90px);
+  grid-gap: 15px;
+  grid-template-columns: repeat(7, 100px);
+  grid-template-rows: repeat(7, 100px);
   grid-auto-flow: column;
 }
 .word {
@@ -302,5 +333,29 @@ button {
   border-radius: 5px;
   padding: 8px;
   color: black;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 </style>
