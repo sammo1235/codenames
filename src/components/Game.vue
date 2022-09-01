@@ -136,16 +136,22 @@ export default {
   color: #2c3e50;
 }
 .box {
-  background-color: white;
+  background-color: rgb(237, 237, 237);
   color: black;
-  border-style: solid;
   border-radius: 5px;
   padding: 7px;
   font-size: 150%;
-  border-width: 2px;
-  border-color: black;
   text-align: center;
+  padding-top: 45%;
+  transition: 0.1s;
+  box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);
   /* width: 200px; */
+}
+
+.box:hover {
+  box-shadow: -1px 3px 7px 1px rgba(40, 40, 40, 0.38);
+  transform: scale(1.05);
+  transition: 0.3s;
 }
 .top-box {
   margin-top: 60px;
