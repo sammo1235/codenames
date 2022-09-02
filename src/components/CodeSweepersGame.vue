@@ -54,7 +54,7 @@ export default {
       turn: 'blue',
       gameEnded: false,
       blueLives: 4,
-      boxLives: 4
+      redLives: 4
     }
   },
   created() {
@@ -271,12 +271,6 @@ export default {
   align-items: center;
   /* width: 200px; */
 }
-
-/* Do an horizontal flip when you move the mouse over the flip box container */
-/* .box-flip{
-  transform: rotateX(180deg);
-  transition: 0.8s;
-} */
 
 .top-box {
   margin-top: 40px;
