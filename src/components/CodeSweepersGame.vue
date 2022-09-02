@@ -66,8 +66,8 @@ export default {
         var turn = 'blue';
         var gameEnded = '';
         var winner = '';
-        let blueLives = 4;
-        let redLives = 4;
+        let blueLives = 3;
+        let redLives = 3;
         querySnapshot.forEach((doc) => {
           turn = doc.data().turn,
           gameEnded = doc.data().game_ended,

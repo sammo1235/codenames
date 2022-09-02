@@ -53,7 +53,7 @@ export const createGame = () => {
 export const createCodeSweepersGame = () => {
   let gameId = short.generate();
 
-  let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 4, redLives: 4};
+  let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 3, redLives: 3};
   gamesCollection.doc(gameId).set(game);
 
   let gameWords = getWords(49)
