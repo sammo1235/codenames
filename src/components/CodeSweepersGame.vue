@@ -40,6 +40,7 @@ import firebase from 'firebase'
 import click from '../assets/click.wav'
 import explosion from '../assets/explosion.wav'
 import turnButton from '../assets/turnButton.wav'
+import gameOver from '../assets/gameover.wav'
 
 export default {
   name: 'App',
@@ -148,6 +149,9 @@ export default {
       if (sound == "turn") {
         audio = new Audio(turnButton)
       }
+      if (sound == "gameover") {
+        audio = new Audio(gameOver)
+      }
       
       audio.play()
       },
@@ -235,6 +239,7 @@ export default {
       } else {
         this.winner = "blue"
       }
+      this.playSound("gameover")
       db.collection('games').doc(this.gameId).update({game_ended: true, winner: this.winner})
     }
   }
