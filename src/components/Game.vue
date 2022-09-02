@@ -153,6 +153,13 @@ export default {
   transform: scale(1.05);
   transition: 0.3s;
 }
+
+.box:active {
+  box-shadow: -1px 2px 5px 1px rgba(40, 40, 40, 0.38);
+  transform: scale(1);
+  transition: 0.2s;
+}
+
 .top-box {
   margin-top: 60px;
 }
