@@ -20,7 +20,7 @@
         </div>
         <div v-if="tile.showColourCount" style="display: flex; flex-direction: column;">
           <p style="margin: 0 0; font-size: 12px;">{{ tile.blueColourCount }}</p>
-          <p style="margin: 0 0; border: 1px solid black; background-color: rgba(82, 148, 248, 0.842); height: 15px; width: 15px; box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);">&nbsp;&nbsp;</p>
+          <p style="margin: 0 0; border: 1px solid black; background-color: rgba(88, 152, 248, 0.842); height: 15px; width: 15px; box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);">&nbsp;&nbsp;</p>
         </div>
         <div v-if="tile.showColourCount" style="display: flex; flex-direction: column;">
           <p style="margin: 0 0; font-size: 12px;">{{ tile.redColourCount }}</p>
@@ -277,10 +277,12 @@ export default {
   margin-top: 40px;
 }
 .clicked-blue {
-  background: rgba(82, 148, 248, 0.842);
+  background: rgba(9, 67, 154, 0.842);
+  color: white;
 }
 .clicked-red {
-  background: rgba(221, 60, 60, 0.945);
+  background: rgba(206, 0, 0, 0.945);
+  color: white;
 }
 .clicked-gray {
   background: rgba(241, 203, 144, 0.555);
