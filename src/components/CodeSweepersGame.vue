@@ -7,7 +7,7 @@
       <p style="margin-left: 40px;">Lives: <span style="color: blue;">{{ blueLives }}</span> - <span style="color: red;">{{ redLives }}</span></p>
 
       <p v-if="winner" style="margin-left: 40px;" :style="[winner === 'blue' ? 'color: blue' : 'color: red']">{{ winner[0].toUpperCase() + winner.substring(1) }} wins!</p>
-      <button class="button" style="margin-left: 40px;" v-if="!winner" v-on:click="takeTurn()">End Turn</button>
+      <button class="button" style="margin-left: 40px;" v-if="!winner" v-on:click="takeTurn(), playSound('turn')">End Turn</button>
     </div>
   </div>
   <div class="flex wrapper">
@@ -39,10 +39,7 @@ import { db } from '@/firebase'
 import firebase from 'firebase'
 import click from '../assets/click.wav'
 import explosion from '../assets/explosion.wav'
-
-var time = Math.random() * (2 - 0) + 0;
-var box = document.querySelector('.box');
-box.style.setProperty('--delay-time', time +'s');
+import turnButton from '../assets/turnButton.wav'
 
 export default {
   name: 'App',
@@ -143,10 +140,13 @@ export default {
         this.checkWinner()
       } 
     },
-    playSound(colour) {
+    playSound(sound) {
       let audio = new Audio(click)
-      if (colour == "black") {
+      if (sound == "black") {
         audio = new Audio(explosion)
+      }
+      if (sound == "turn") {
+        audio = new Audio(turnButton)
       }
       
       audio.play()
@@ -255,7 +255,7 @@ export default {
 }
 
 .box {
-  animation: fadeIn var(--delay-time) cubic-bezier(.36,.07,.19,.97) both;
+  animation: fadeIn 1s cubic-bezier(.36,.07,.19,.97) both;
   background-color: rgb(237, 237, 237);
   color: black;
   border-radius: 5px;
@@ -333,6 +333,13 @@ button {
   border-radius: 5px;
   padding: 8px;
   color: black;
+  transition: 0.5s;
+}
+
+button:hover {
+  background: black;
+  color: white;
+  transition: 0.2s;
 }
 
 @keyframes shake {
