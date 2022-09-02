@@ -1,7 +1,7 @@
 <template>
   <div class="flex top-box">
     <h1>C O D E S W E E P E R S</h1>
-    <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; margin-bottom: 0px;">
+    <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; margin-bottom: 0px; font-size: 20px; align-items: center;">
       <p><span style="color: blue;">{{ colourCount('blue')}}</span> - <span style="color: red;">{{ colourCount('red')}}</span></p>
       <p v-if="!winner" style="margin-left: 40px;" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
       <p style="margin-left: 40px;">Lives: <span style="color: blue;">{{ blueLives }}</span> - <span style="color: red;">{{ redLives }}</span></p>
@@ -13,18 +13,18 @@
   <div class="flex wrapper">
     <div @click="playSound(tile.colour), clickTile(tile.id, tile.clicked, tile.colour, index)" v-for="(tile, index) in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour} box-flip` : spymaster ? `spymaster-${tile.colour}` : '', 'box']">
       <p class="word" style="font-size: 12px; margin: 5px 0px; 5px 0px; margin-left: auto; margin-right: auto; font-weight: normal; width: 100%;">{{ tile.word.toUpperCase() }}</p>
-      <div style="display: flex; height: 25px; justify-content: center;">
+      <div style="display: flex; height: auto; justify-content: space-around; width: 100%;">
         <div v-if="tile.showBombCount" style="display: flex; flex-direction: column;">
           <p class="word" style="font-size: 12px; margin: auto; font-weight: normal;" v-if="tile.showBombCount">{{ tile.bombCount }}</p>
-          <img style="height: 20px; margin-top: -3px" src="https://www.freeiconspng.com/uploads/black-bomb-png-image-0.png" />
+          <img style="height: 20px; margin-top: -3px box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);" src="https://www.freeiconspng.com/uploads/black-bomb-png-image-0.png" />
         </div>
         <div v-if="tile.showColourCount" style="display: flex; flex-direction: column;">
           <p style="margin: 0 0; font-size: 12px;">{{ tile.blueColourCount }}</p>
-          <p style="margin: 0 0; border: 1px solid black; background-color: blue; height: 15px; width: 15px;">&nbsp;&nbsp;</p>
+          <p style="margin: 0 0; border: 1px solid black; background-color: rgba(82, 148, 248, 0.842); height: 15px; width: 15px; box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);">&nbsp;&nbsp;</p>
         </div>
         <div v-if="tile.showColourCount" style="display: flex; flex-direction: column;">
           <p style="margin: 0 0; font-size: 12px;">{{ tile.redColourCount }}</p>
-          <p style="margin: 0 0; border: 1px solid black; background-color: red; height: 15px; width: 15px;">&nbsp;&nbsp;</p>
+          <p style="margin: 0 0; border: 1px solid black; background-color: red; height: 15px; width: 15px; box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);">&nbsp;&nbsp;</p>
         </div>
       </div>
     </div>
@@ -250,12 +250,8 @@ export default {
   color: #2c3e50;
 }
 
-:root {
-  --delay-time: 1s; 
-}
-
 .box {
-  animation: fadeIn 1s cubic-bezier(.36,.07,.19,.97) both;
+  animation: fadeIn 1s ease-in;
   background-color: rgb(237, 237, 237);
   color: black;
   border-radius: 5px;
@@ -266,9 +262,8 @@ export default {
   transition: 0.8s;
   box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  transform-style: preserve-3d;
   /* width: 200px; */
 }
 
@@ -325,13 +320,20 @@ a {
   text-decoration: none;
   color: black;
 }
+
+a:hover {
+  color: white;
+}
+
 button {
   background: white;
   border-style: solid;
   border-width: 1px;
   border-color: black;
   border-radius: 5px;
-  padding: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 40px;
   color: black;
   transition: 0.5s;
 }
