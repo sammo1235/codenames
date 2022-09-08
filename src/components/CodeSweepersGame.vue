@@ -1,10 +1,10 @@
 <template>
   <div class="flex top-box">
-    <h1>C O D E S W E E P E R S</h1>
+    <h1 style="margin: 5px 0px 0px 0px; font-size: 28px;">C O D E S W E E P E R S</h1>
     <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; margin-bottom: 0px; font-size: 20px; align-items: center;">
-      <p><span style="color: blue;">{{ colourCount('blue')}}</span> - <span style="color: red;">{{ colourCount('red')}}</span></p>
-      <p v-if="!winner" style="margin-left: 40px;" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
-      <p style="margin-left: 40px;">Lives: <span style="color: blue;">{{ blueLives }}</span> - <span style="color: red;">{{ redLives }}</span></p>
+      <p><span style="color: blue; font-size: 18px;">{{ colourCount('blue')}}</span> - <span style="color: red; font-size: 18px;">{{ colourCount('red')}}</span></p>
+      <p v-if="!winner" style="margin-left: 40px; font-size: 16px;" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
+      <p style="margin-left: 40px; font-size: 18px;">Lives: <span style="color: blue; font-size: 18px;">{{ blueLives }}</span> - <span style="color: red; font-size: 18px;">{{ redLives }}</span></p>
 
       <p v-if="winner" style="margin-left: 40px;" :style="[winner === 'blue' ? 'color: blue' : 'color: red']">{{ winner[0].toUpperCase() + winner.substring(1) }} wins!</p>
       <button class="button" style="margin-left: 40px;" v-if="!winner" v-on:click="takeTurn(), playSound('turn')">End Turn</button>
@@ -29,7 +29,7 @@
       </div>
     </div>
   </div>
-  <button><router-link to='/'>Home</router-link></button>
+  <router-link to='/'><button>Home</button></router-link>
   <button v-on:click="spymasterSwitch()" style="margin-left: 10px; margin-top: 30px">Spymaster</button>
   <audio id="audio" src="../assets/click.wav"></audio>
 </template>
@@ -122,39 +122,42 @@ export default {
   },
   methods: {
     clickTile(tileId, clicked, tileColour, index) {
-      if(clicked === true || this.gameEnded === true) {
-        console.log('already clicked')
-      } else {
-        this.tiles = this.tiles.map((tile) => tile.id === tileId ? {...tile, clicked: !tile.clicked} : tile)
-        const tileRef = db.collection('tiles').doc(tileId)
-        tileRef.update({clicked: true});
-        this.showBombsInArea(index, tileRef, tileColour == this.turn)
-        if (tileColour === "black") {
-            this.takeLife()
-        }
-        if (this.blueLives == 0 || this.redLives == 0) {
-          this.endGame()
-        }
-        if(tileColour != this.turn) {
-          this.takeTurn()
-        }
-        this.checkWinner()
-      } 
+      if (!this.spymaster) {
+        if(clicked === true || this.gameEnded === true) {
+          console.log('already clicked')
+        } else {
+          this.tiles = this.tiles.map((tile) => tile.id === tileId ? {...tile, clicked: !tile.clicked} : tile)
+          const tileRef = db.collection('tiles').doc(tileId)
+          tileRef.update({clicked: true});
+          this.showBombsInArea(index, tileRef, tileColour == this.turn)
+          if (tileColour === "black") {
+              this.takeLife()
+          }
+          if (this.blueLives == 0 || this.redLives == 0) {
+            this.endGame()
+          }
+          if(tileColour != this.turn) {
+            this.takeTurn()
+          }
+          this.checkWinner()
+        } 
+      }
     },
     playSound(sound) {
-      let audio = new Audio(click)
-      if (sound == "black") {
-        audio = new Audio(explosion)
+      if (!this.spymaster) {
+        let audio = new Audio(click)
+        if (sound == "black") {
+          audio = new Audio(explosion)
+        }
+        if (sound == "turn") {
+          audio = new Audio(turnButton)
+        }
+        if (sound == "gameover") {
+          audio = new Audio(gameOver)
+        }
+        audio.play()
       }
-      if (sound == "turn") {
-        audio = new Audio(turnButton)
-      }
-      if (sound == "gameover") {
-        audio = new Audio(gameOver)
-      }
-      
-      audio.play()
-      },
+    },
     takeLife() {
       const gameRef = db.collection('games').doc(this.gameId)
       if (this.turn == "red") {
@@ -188,13 +191,12 @@ export default {
       validArea.forEach((coord) => {
         areaIds.push(this.tileMap[coord[0]][coord[1]])
       });
-      console.log(areaIds)
       let currentTile = areaIds.indexOf(clicked_tile_index)
       areaIds.splice(currentTile, 1)
       let bombCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "black").length
       let redCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "red").length
       let blueCount = this.tiles.filter((tile, index) => areaIds.includes(index) && tile.colour == "blue").length
-      console.log(bombCount)
+
       if (correctAnswer) {
         this.tiles = this.tiles.map((tile, index) => index === clicked_tile_index ? {...tile, showBombCount: true, bombCount: bombCount, showColourCount: true, redColourCount: redCount, blueColourCount: blueCount} : tile)
         tileRef.update({showBombCount: true, bombCount: bombCount, showColourCount: true, redColourCount: redCount, blueColourCount: blueCount})
@@ -211,7 +213,9 @@ export default {
       return filtered.length
     },
     spymasterSwitch() {
-      this.spymaster = !this.spymaster;
+      if (!this.spymaster) {
+        this.spymaster = !this.spymaster;
+      }
     },
     checkWinner() {
       if(this.colourCount('blue') === 0) {
@@ -273,7 +277,7 @@ export default {
 }
 
 .top-box {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .clicked-blue {
   background: rgba(9, 67, 154, 0.842);
@@ -304,7 +308,7 @@ export default {
   background: rgba(41, 41, 41, 0.671);
 }
 .wrapper {
-  margin-top: 15px;
+  margin-top: 8px;
   justify-content: center;
   display: grid;
   grid-gap: 15px;

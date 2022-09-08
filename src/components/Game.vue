@@ -1,23 +1,30 @@
 <template>
   <div class="flex top-box">
-    <h1>C O D E N A M E D</h1>
-    <span style="color: blue; font-size: 18px; font-weight: bold;">{{ colourCount('blue')}}</span> - <span style="color: red; font-size: 18px; font-weight: bold;">{{ colourCount('red')}}</span>
-    <p v-if="!winner" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
-    <p v-if="winner" :style="[winner === 'blue' ? 'color: blue' : 'color: red']">{{ winner[0].toUpperCase() + winner.substring(1) }} wins!</p>
-    <button class="button" v-if="!winner" v-on:click="takeTurn()">End Turn</button>
-  </div>
-  <div class="flex wrapper">
-    <div @click="clickTile(tile.id, tile.clicked, tile.colour)" v-for="tile in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour}` : spymaster ? `spymaster-${tile.colour}` : '', 'box']">
-      <p class="word" style="font-size: 15px; margin: auto; padding:40px 0; font-weight: bold;">{{ tile.word.toUpperCase() }}</p>
+    <h1>C O D E N A M E S</h1>
+    <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; margin-bottom: 0px; font-size: 20px; align-items: center;">
+      <p><span style="color: blue;">{{ colourCount('blue')}}</span> - <span style="color: red;">{{ colourCount('red')}}</span></p>
+      <p v-if="!winner" style="margin-left: 40px;" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
+      <p v-if="winner" style="margin-left: 40px;" :style="[winner === 'blue' ? 'color: blue' : 'color: red']">{{ winner[0].toUpperCase() + winner.substring(1) }} wins!</p>
+      <button class="button" style="margin-left: 40px;" v-if="!winner" v-on:click="takeTurn(), playSound('turn')">End Turn</button>
     </div>
   </div>
-  <button><router-link to='/'>Home</router-link></button>
+  <div class="flex c-wrapper">
+    <div  @click="playSound(tile.colour), clickTile(tile.id, tile.clicked, tile.colour)" v-for="tile in tiles" :key="tile.word" :class="[tile.clicked ? `clicked-${tile.colour}` : spymaster ? `spymaster-${tile.colour}` : '', 'box']">
+      <p class="word" style="font-size: 14px; margin: 5px 0px 5px 0px; margin-left: auto; margin-right: auto; font-weight: normal; width: 100%;">{{ tile.word.toUpperCase() }}</p>
+    </div>
+  </div>
+  <router-link to='/'><button>Home</button></router-link>
   <button v-on:click="spymasterSwitch()" style="margin-left: 10px; margin-top: 30px">Spymaster</button>
 </template>
 
 <script>
 import { db } from '@/firebase'
 import firebase from 'firebase'
+import click from '../assets/click.wav'
+import explosion from '../assets/explosion.wav'
+import turnButton from '../assets/turnButton.wav'
+import gameOver from '../assets/gameover.wav'
+
 export default {
   name: 'App',
   data() {
@@ -85,6 +92,20 @@ export default {
         this.checkWinner()
       } 
     },
+    playSound(sound) {
+      let audio = new Audio(click)
+      if (sound == "black") {
+        audio = new Audio(explosion)
+      }
+      if (sound == "turn") {
+        audio = new Audio(turnButton)
+      }
+      if (sound == "gameover") {
+        audio = new Audio(gameOver)
+      }
+      
+      audio.play()
+    },
     colourCount(colour) {
       var filtered = this.tiles.filter(function (el) {
         return el.colour == colour
@@ -136,15 +157,19 @@ export default {
   color: #2c3e50;
 }
 .box {
+  animation: fadeIn 1s ease-in;
   background-color: rgb(237, 237, 237);
   color: black;
   border-radius: 5px;
   padding: 7px;
   font-size: 150%;
   text-align: center;
-  padding-top: 45%;
-  transition: 0.1s;
+  justify-content: center;
+  transition: 0.8s;
   box-shadow: -1px 1px 3px 1px rgba(66,66,66,0.38);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   /* width: 200px; */
 }
 
@@ -188,11 +213,11 @@ export default {
 .spymaster-black {
   background: rgba(41, 41, 41, 0.671);
 }
-.wrapper {
-  margin-top: 30px;
+.c-wrapper {
+  margin-top: 20px;
   justify-content: center;
   display: grid;
-  grid-gap: 10px;
+  grid-gap: 15px;
   grid-template-columns: repeat(5, 110px);
   grid-template-rows: repeat(5, 110px);
   grid-auto-flow: column;

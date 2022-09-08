@@ -36,16 +36,21 @@ export const createGame = () => {
   var game = {turn: 'blue', game_ended: false, winner: ''};
   gamesCollection.doc(gameId).set(game)
 
+  let gameWords = getWords(25)
   var tiles = [];
-  tiles.push(createTile(gameId, 'black'));
-  for (var j=0; j<9; j++) {
-    tiles.push(createTile(gameId, 'blue'))
+  let blackWord = gameWords[0]
+  tiles.push(createTile(gameId, blackWord, 'black'));
+  for (var j=1; j<10; j++) { // 9 blue
+    let word = gameWords[j]
+    tiles.push(createTile(gameId, word, 'blue'))
   }
-  for (var k=0; k<8; k++) {
-    tiles.push(createTile(gameId, 'red'))
+  for (var k=10; k<18; k++) { // 8 red 
+    let word = gameWords[k]
+    tiles.push(createTile(gameId, word, 'red'))
   }
-  for (var i=0; i<7; i++) {
-    tiles.push(createTile(gameId, 'gray'))
+  for (var i=18; i<25; i++) { // 7 gray
+    let word = gameWords[i]
+    tiles.push(createTile(gameId, word, 'gray'))
   }
   return gameId;
 }
@@ -86,10 +91,6 @@ const getWords = (amount) => {
 }
 
 export const createTile = (gameId, word, colour) => {
-  // while (word.length > 8 || word.length < 4) {
-  //   word = words[Math.floor(Math.random()*words.length)];
-  // }
-
   var tile = {game_id: gameId, 'word': word, 'clicked': false, 'colour': colour, showBombCount: false, bombCount: 0, showBombsInArea: false, redColourCount: 0, blueColourCount: 0, showColourCount: false}; 
   return tilesCollection.add(tile);
 }

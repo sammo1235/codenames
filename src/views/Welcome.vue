@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>C O D E N A M E D</h1>
+    <h1>C O D E N A M E S</h1>
     <button v-on:click="createGame()" style="margin-top: 30px;">New Game</button>
   </div>
   <form id="join-game" style="margin-top: 25px">
