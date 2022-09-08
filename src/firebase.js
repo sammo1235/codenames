@@ -81,7 +81,7 @@ export const createCodeSweepersGame = () => {
 }
 
 const getWords = (amount) => {
-  let start = Math.floor(Math.random()*words.length)
+  let start = Math.floor(Math.random()*(words.length - amount))
   return words.slice(start, start + amount + 1);
 }
 
