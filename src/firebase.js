@@ -85,9 +85,27 @@ export const createCodeSweepersGame = () => {
   return gameId;
 }
 
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
 const getWords = (amount) => {
   let start = Math.floor(Math.random()*(words.length - amount))
-  return words.slice(start, start + amount + 1);
+  return shuffle(words).slice(start, start + amount + 1);
 }
 
 export const createTile = (gameId, word, colour) => {
