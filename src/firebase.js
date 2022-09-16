@@ -1,6 +1,7 @@
 import firebase from 'firebase'
 import 'firebase/firestore'
 import { words } from './new_words';
+import { canadianWords } from './canadian_words';
 
 const short = require("short-uuid")
 
@@ -55,13 +56,13 @@ export const createGame = () => {
   return gameId;
 }
 
-export const createCodeSweepersGame = () => {
+export const createCodeSweepersGame = (canadian = false) => {
   let gameId = short.generate();
 
   let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 3, redLives: 3};
   gamesCollection.doc(gameId).set(game);
 
-  let gameWords = getWords(49)
+  let gameWords = getWords(49, canadian)
   let tiles = [];
   for (let i = 0; i < 9; i++) {
     let word = gameWords[i]
@@ -103,9 +104,13 @@ function shuffle(array) {
   return array;
 }
 
-const getWords = (amount) => {
-  let start = Math.floor(Math.random()*(words.length - amount))
-  return shuffle(words).slice(start, start + amount + 1);
+const getWords = (amount, canadian) => {
+  if (canadian) {
+    return shuffle(canadianWords)
+  } else {
+    let start = Math.floor(Math.random()*(words.length - amount))
+    return shuffle(words).slice(start, start + amount + 1);
+  }
 }
 
 export const createTile = (gameId, word, colour) => {
