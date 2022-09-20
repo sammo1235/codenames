@@ -59,7 +59,7 @@ export const createGame = () => {
 export const createCodeSweepersGame = (canadian = false) => {
   let gameId = short.generate();
 
-  let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 3, redLives: 3};
+  let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 3, redLives: 3, canadian: canadian};
   gamesCollection.doc(gameId).set(game);
 
   let gameWords = getWords(49, canadian)
@@ -105,12 +105,9 @@ function shuffle(array) {
 }
 
 const getWords = (amount, canadian) => {
-  if (canadian) {
-    return shuffle(canadianWords)
-  } else {
-    let start = Math.floor(Math.random()*(words.length - amount))
-    return shuffle(words).slice(start, start + amount + 1);
-  }
+  let wordList = canadian ? canadianWords : words
+  let start = Math.floor(Math.random()*(wordList.length - amount))
+  return shuffle(wordList).slice(start, start + amount + 1);
 }
 
 export const createTile = (gameId, word, colour) => {

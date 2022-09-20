@@ -1,6 +1,7 @@
 <template>
   <div class="flex top-box">
-    <h1 style="margin: 5px 0px 0px 0px; font-size: 28px;">C O D E S W E E P E R S</h1>
+    <h1 v-if="canadian" style="margin: 5px 0px 0px 0px; font-size: 28px;">🇨🇦 C A N A D A S W E E P E R S 🇨🇦</h1>
+    <h1 v-if="!canadian" style="margin: 5px 0px 0px 0px; font-size: 28px;">C O D E S W E E P E R S</h1>
     <div style="display: flex; flex-direction: row; justify-content: center; text-align: center; margin-bottom: 0px; font-size: 20px; align-items: center;">
       <p><span style="color: blue; font-size: 18px;">{{ colourCount('blue')}}</span> - <span style="color: red; font-size: 18px;">{{ colourCount('red')}}</span></p>
       <p v-if="!winner" style="margin-left: 40px; font-size: 16px;" :style="[turn === 'blue' ? 'color: blue' : 'color: red']">{{ turn[0].toUpperCase() + turn.substring(1) }}'s turn</p>
@@ -54,7 +55,8 @@ export default {
       turn: 'blue',
       gameEnded: false,
       blueLives: 4,
-      redLives: 4
+      redLives: 4,
+      canadian: false
     }
   },
   created() {
@@ -68,17 +70,20 @@ export default {
         var winner = '';
         let blueLives = 3;
         let redLives = 3;
+        let canadian = false;
         querySnapshot.forEach((doc) => {
           turn = doc.data().turn,
           gameEnded = doc.data().game_ended,
           winner = doc.data().winner,
           blueLives = doc.data().blueLives,
-          redLives = doc.data().redLives
+          redLives = doc.data().redLives,
+          canadian = doc.data().canadian
         })
         this.turn = turn;
         this.gameEnded = gameEnded;
         this.blueLives = blueLives;
         this.redLives = redLives;
+        this.canadian = canadian;
 
         if(gameEnded) {
           this.spymaster = true;
