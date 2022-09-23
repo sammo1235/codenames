@@ -63,24 +63,21 @@ export const createCodeSweepersGame = (canadian = false, bombCount = 12) => {
   gamesCollection.doc(gameId).set(game);
 
   let gameWords = getWords(49, canadian)
-  let tiles = [];
-  let blueCount = 8
-  let redCount = 7
-  for (let i = 0; i <= blueCount; i++) {
+  for (let i = 0; i < 9; i++) {
     let word = gameWords[i]
-    tiles.push(createTile(gameId, word, 'blue'))
+    createTile(gameId, word, 'blue')
   }
-  for (var k=blueCount; k <= blueCount+redCount; k++) {
+  for (let k=9; k < 17; k++) {
     let word = gameWords[k]
-    tiles.push(createTile(gameId, word, 'red'))
+    createTile(gameId, word, 'red')
   }
-  for (var j=blueCount+redCount; j<= blueCount+redCount+bombCount; j++) {
+  for (let j=17; j<(17+bombCount); j++) {
     let word = gameWords[j]
-    tiles.push(createTile(gameId, word, 'black'))
+    createTile(gameId, word, 'black')
   }
-  for (var m=blueCount+redCount+bombCount; m<49; m++) {
+  for (let m=(17+bombCount); m<49; m++) {
     let word = gameWords[m]
-    tiles.push(createTile(gameId, word, 'gray'))
+    createTile(gameId, word, 'gray')
   }
 
   // uniq checker

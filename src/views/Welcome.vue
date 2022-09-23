@@ -57,7 +57,7 @@
         } else if (selectedDifficulty == "hard") {
           bombCount = 20
         } else if (selectedDifficulty == "impossible") {
-          bombCount = 34
+          bombCount = 32
         }
         var gameId = createCodeSweepersGame(canadian, bombCount);
         this.$router.push(`/csgame/${gameId}`)
