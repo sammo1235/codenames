@@ -54,8 +54,8 @@ export default {
       gameId: this.$route.params.id,
       turn: 'blue',
       gameEnded: false,
-      blueLives: 4,
-      redLives: 4,
+      blueLives: 3,
+      redLives: 3,
       canadian: false
     }
   },

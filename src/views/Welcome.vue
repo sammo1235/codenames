@@ -10,7 +10,16 @@
 
   <div class="hello">
     <h1>C O D E S W E E P E R S</h1>
-    <button v-on:click="createCodesweepersGame()" style="margin-top: 30px;">New Game</button>
+    <div style="">
+      <label>Difficulty</label>
+      <select id="codesweepers-difficulty" style="margin-left: 10px;">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+        <option value="impossible">Impossible</option>
+      </select>
+      <button v-on:click="createCodesweepersGame()" style="margin: 30px 0 0 10px;">New Game</button>
+    </div>
   </div>
   <form id="join-sweepers-game" style="margin-top: 25px">
     <input style="padding: 10px; border-radius: 7px;" type="text" name="sweepersGameId" placeholder="Enter Game ID">
@@ -38,7 +47,19 @@
         this.$router.push(`/game/${gameId}`)
       },
       createCodesweepersGame(canadian = false) {
-        var gameId = createCodeSweepersGame(canadian);
+        let select = document.getElementById("codesweepers-difficulty")
+        let selectedDifficulty = select.options[select.selectedIndex].value
+        let bombCount;
+        if (selectedDifficulty == "easy") {
+          bombCount = 8
+        } else if (selectedDifficulty == "medium") {
+          bombCount = 12
+        } else if (selectedDifficulty == "hard") {
+          bombCount = 20
+        } else if (selectedDifficulty == "impossible") {
+          bombCount = 34
+        }
+        var gameId = createCodeSweepersGame(canadian, bombCount);
         this.$router.push(`/csgame/${gameId}`)
       },
       joinGame() {

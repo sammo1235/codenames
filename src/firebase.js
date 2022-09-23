@@ -56,7 +56,7 @@ export const createGame = () => {
   return gameId;
 }
 
-export const createCodeSweepersGame = (canadian = false) => {
+export const createCodeSweepersGame = (canadian = false, bombCount = 12) => {
   let gameId = short.generate();
 
   let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 3, redLives: 3, canadian: canadian};
@@ -64,19 +64,21 @@ export const createCodeSweepersGame = (canadian = false) => {
 
   let gameWords = getWords(49, canadian)
   let tiles = [];
-  for (let i = 0; i < 9; i++) {
+  let blueCount = 8
+  let redCount = 7
+  for (let i = 0; i <= blueCount; i++) {
     let word = gameWords[i]
     tiles.push(createTile(gameId, word, 'blue'))
   }
-  for (var k=9; k<17; k++) {
+  for (var k=blueCount; k <= blueCount+redCount; k++) {
     let word = gameWords[k]
     tiles.push(createTile(gameId, word, 'red'))
   }
-  for (var j=17; j<29; j++) {
+  for (var j=blueCount+redCount; j<= blueCount+redCount+bombCount; j++) {
     let word = gameWords[j]
     tiles.push(createTile(gameId, word, 'black'))
   }
-  for (var m=29; m<49; m++) {
+  for (var m=blueCount+redCount+bombCount; m<49; m++) {
     let word = gameWords[m]
     tiles.push(createTile(gameId, word, 'gray'))
   }
