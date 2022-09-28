@@ -56,10 +56,10 @@ export const createGame = () => {
   return gameId;
 }
 
-export const createCodeSweepersGame = (canadian = false, bombCount = 12) => {
+export const createCodeSweepersGame = (canadian = false, bombCount = 12, lifeCount) => {
   let gameId = short.generate();
 
-  let game = {turn: 'blue', game_ended: false, winner: '', blueLives: 3, redLives: 3, canadian: canadian};
+  let game = {turn: 'blue', game_ended: false, winner: '', blueLives: lifeCount, redLives: lifeCount, canadian: canadian};
   gamesCollection.doc(gameId).set(game);
 
   let gameWords = getWords(49, canadian)

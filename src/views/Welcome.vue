@@ -13,10 +13,11 @@
     <div style="">
       <label>Difficulty</label>
       <select id="codesweepers-difficulty" style="margin-left: 10px;">
-        <option value="easy">Easy</option>
-        <option value="medium" selected>Medium</option>
-        <option value="hard">Hard</option>
-        <option value="impossible">Impossible</option>
+        <option value="easy">Easy (8 bombs, 3 lives)</option>
+        <option value="medium" selected>Medium (12 bombs, 3 lives)</option>
+        <option value="hard">Hard (20 bombs, 2 lives)</option>
+        <option value="impossible">Impossible (32 bombs, 2 lives)</option>
+        <option value="insanity">Insanity (32 bombs, 1 life)</option>
       </select>
       <button v-on:click="createCodesweepersGame()" style="margin: 30px 0 0 10px;">New Game</button>
     </div>
@@ -50,6 +51,7 @@
         let select = document.getElementById("codesweepers-difficulty")
         let selectedDifficulty = select.options[select.selectedIndex].value
         let bombCount;
+        let lifeCount = 3
         if (selectedDifficulty == "easy") {
           bombCount = 8
         } else if (selectedDifficulty == "medium") {
@@ -58,8 +60,12 @@
           bombCount = 20
         } else if (selectedDifficulty == "impossible") {
           bombCount = 32
+          lifeCount = 2
+        } else if (selectedDifficulty == "insanity") {
+          bombCount = 32
+          lifeCount = 1
         }
-        var gameId = createCodeSweepersGame(canadian, bombCount);
+        var gameId = createCodeSweepersGame(canadian, bombCount, lifeCount);
         this.$router.push(`/csgame/${gameId}`)
       },
       joinGame() {
