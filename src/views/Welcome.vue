@@ -58,6 +58,7 @@
           bombCount = 12
         } else if (selectedDifficulty == "hard") {
           bombCount = 20
+          lifeCount = 2
         } else if (selectedDifficulty == "impossible") {
           bombCount = 32
           lifeCount = 2
