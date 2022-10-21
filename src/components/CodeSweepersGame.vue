@@ -1,4 +1,5 @@
 <template>
+  <Canvas/>
   <div class="flex top-box">
     <h1 v-if="canadian" style="margin: 5px 0px 0px 0px; font-size: 28px;">🇨🇦 C A N A D A S W E E P E R S 🇨🇦</h1>
     <h1 v-if="!canadian" style="margin: 5px 0px 0px 0px; font-size: 28px;">C O D E S W E E P E R S</h1>
@@ -32,6 +33,7 @@
   </div>
   <router-link to='/'><button>Home</button></router-link>
   <button v-on:click="spymasterSwitch()" style="margin-left: 10px; margin-top: 30px">Spymaster</button>
+  <button id="drawToggle" @click="disableCanvas" class="drawButton">Let Me Play</button>
   <audio id="audio" src="../assets/click.wav"></audio>
 </template>
 
@@ -42,9 +44,13 @@ import click from '../assets/click.wav'
 import explosion from '../assets/explosion.wav'
 import turnButton from '../assets/turnButton.wav'
 import gameOver from '../assets/gameover.wav'
+import Canvas from './canvas.vue'
 
 export default {
   name: 'App',
+  components: {
+    Canvas
+  },
   data() {
     return {
       tiles: [],
@@ -58,6 +64,9 @@ export default {
       redLives: 3,
       canadian: false
     }
+  },
+  props: {
+    canvasWidth: String
   },
   created() {
     const tileRef = db.collection('tiles')
@@ -217,6 +226,17 @@ export default {
       })
       return filtered.length
     },
+    disableCanvas() {
+      let canvas = document.getElementById("canvas");
+      canvas.style.pointerEvents = canvas.style.pointerEvents === 'none' ? '' : 'none';
+
+      let button = document.getElementById("drawToggle");
+      button.textContent = button.textContent === 'Let Me Draw' ? 'Let Me Play' : 'Let Me Draw';
+
+      let buttons = document.getElementById("buttons");
+      buttons.style.display = buttons.style.display === 'none' ? '' : 'none';
+
+    },
     spymasterSwitch() {
       if (!this.spymaster) {
         this.spymaster = !this.spymaster;
@@ -262,6 +282,12 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.drawButton {
+  position: relative;
+  z-index: 5;
+  margin-left: 10px;
 }
 
 .box {
