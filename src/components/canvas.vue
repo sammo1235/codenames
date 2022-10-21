@@ -121,7 +121,7 @@
           </select>
           <input type="color" v-model="color" />
           <select v-model="strokeType">
-            <option value="dash">Dash</option>
+            <option value="dash">Freehand</option>
             <option value="line">Straight Line</option>
             <option value="circle">Circle</option>
             <option value="square">Square</option>
