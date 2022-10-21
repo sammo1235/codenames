@@ -1,5 +1,5 @@
 <template>
-  <div id="canvas" class="flex-row canvasContainer">
+  <div id="canvasContainer" class="flex-row canvasContainer">
     <div class="source">
       <div class="canvas">
         <vue-drawing-canvas
@@ -233,6 +233,7 @@ export default {
   left: 2%;
   width: 100%;
   z-index: 2;
+  pointer-events: none;
 }
 .source {
   display: flex;
@@ -243,6 +244,8 @@ export default {
   position: absolute;
   top: 40vh;
   right: 18vw;
+  display: none;
+  flex-direction: column;
 
 }
 

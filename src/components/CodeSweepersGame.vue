@@ -33,7 +33,7 @@
   </div>
   <router-link to='/'><button>Home</button></router-link>
   <button v-on:click="spymasterSwitch()" style="margin-left: 10px; margin-top: 30px">Spymaster</button>
-  <button id="drawToggle" @click="disableCanvas" class="drawButton">Let Me Play</button>
+  <button id="drawToggle" @click="disableCanvas" class="drawButton">Let Me Draw</button>
   <audio id="audio" src="../assets/click.wav"></audio>
 </template>
 
@@ -227,14 +227,16 @@ export default {
       return filtered.length
     },
     disableCanvas() {
-      let canvas = document.getElementById("canvas");
-      canvas.style.pointerEvents = canvas.style.pointerEvents === 'none' ? '' : 'none';
+      let canvas = document.getElementById("canvasContainer");
+      console.log(canvas.style.pointerEvents)
+      canvas.style.pointerEvents = canvas.style.pointerEvents === 'auto' ? 'none' : 'auto';
 
       let button = document.getElementById("drawToggle");
-      button.textContent = button.textContent === 'Let Me Draw' ? 'Let Me Play' : 'Let Me Draw';
+      button.textContent = button.textContent === 'Let Me Play' ? 'Let Me Draw' : 'Let Me Play';
 
       let buttons = document.getElementById("buttons");
-      buttons.style.display = buttons.style.display === 'none' ? '' : 'none';
+      console.log(buttons.style.display)
+      buttons.style.display = buttons.style.display === 'flex' ? 'none' : 'flex';
 
     },
     spymasterSwitch() {
